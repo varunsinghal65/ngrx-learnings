@@ -1,5 +1,5 @@
 <div id="wrapper">
-  <div id="shopping-list">
+  <div id="shopping-list" [class.loading]="(loading$ | async)" *ngIf="!(error$ | async); else error">
     <div id="list">
       <h2>Shopping List</h2>
 
@@ -17,3 +17,7 @@
     </form>
   </div>
 </div>
+
+<ng-template #error>
+  <h2>{{(error$ | async)?.message}}</h2>
+</ng-template>

@@ -37,18 +37,40 @@ export function ShoppingReducer(
                     error : action.payload,
                     loading : false
                 }
+            case ShoppingActionTypes.ADD_ITEM:
+                return {
+                    ...state,
+                    loading : true
+                }    
             case ShoppingActionTypes.ADD_ITEM_SUCCESS:
                 return {
                     ...state, 
-                    list: action.payload, 
+                    list: [...state.list, action.payload], 
                     loading: false
-                };    
+                };
+            case ShoppingActionTypes.ADD_ITEM_FAILURE:
+                return {
+                    ...state,
+                    loading : false,
+                    error : action.payload
+                }
+            case ShoppingActionTypes.DELETE_ITEM : 
+                return {
+                    ...state,
+                    loading : false
+                } 
             case ShoppingActionTypes.DELETE_ITEM_SUCCESS:
                 return {
                     ...state,
                     list : state.list.filter((shoppingItem)=>shoppingItem.id !== action.payload), 
                     loading: false
-                };    
+                };                    
+            case ShoppingActionTypes.ADD_ITEM_FAILURE : 
+                return {
+                    ...state,
+                    loading: false,
+                    error : action.payload
+                }       
             default:
                 return state;   
         }
