@@ -2,25 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { AddItemAction } from './store/actions/shopping-actions';
 import { AppState } from './store/models/app-state';
 import { ShoppingItem } from './store/models/shopping-item.model';
-
-/**
- * On App run, how does the initial state display in the screen ? 
- * 
- * When the app is run, the app.component is init, 
- * In ngOnInit(), we try to query the store, for "shopping" property in SST.
- * remember, we have registered a reducer for this "shopping" property in the root module.
- * Thus, when we query the SST via the select method for the property "shopping".
- * REDUCER associated with the store slice ("shopping" in our case) is called.
- * Since there is no action passed, initial state is returned.
- */
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
+
 export class AppComponent implements OnInit{
   title = 'ngrx-varun';
   shoppingItems$ : Observable<Array<ShoppingItem>>;
@@ -31,9 +22,24 @@ export class AppComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    //gettting data from the store, we would usually create a selector for this.
-    //right now we skip it.
-    //the select method returns a observable
     this.shoppingItems$ = this.store.select(store=> store.shopping);
+    //every 2 seconds, we dispatch the add action.
+    //When we dispatch the action, ShoppingReducer is called by the store framework.
+    //How did the store know that this reducer is to be called ?
+    //In the input params of reducer, we specified the type of "action" as "Shopping Action"
+    //So all actions of type "Shopping Action" are now mapped to the reducer.
+    //Then finally the switch in the reducer recues the state and returns a new state.
+    setInterval(() => this.addItem(), 2000);
   }
+
+  addItem() : void {
+    //dispatch method is used to send actions to our store
+    this.store.dispatch(new AddItemAction(
+      {//payload
+        id: '456', 
+        name : 'Fanta'
+      }
+      ));
+  }
+
 }
