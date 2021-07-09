@@ -3,7 +3,7 @@ import { ShoppingItem } from "../models/shopping-item.model";
 
 const initialState : Array<ShoppingItem> = [{
     id : "123",
-    name : 'Coke'
+    name : 'Coke - Initial state'
 }];
 
 export function ShoppingReducer(

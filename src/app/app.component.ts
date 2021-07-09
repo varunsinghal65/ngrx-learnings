@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { AddItemAction } from './store/actions/shopping-actions';
 import { AppState } from './store/models/app-state';
 import { ShoppingItem } from './store/models/shopping-item.model';
+import { v4 as uuid } from 'uuid';
 
 @Component({
   selector: 'app-root',
@@ -14,6 +15,7 @@ import { ShoppingItem } from './store/models/shopping-item.model';
 
 export class AppComponent implements OnInit{
   title = 'ngrx-varun';
+  newShoppingItem : ShoppingItem = {id : '', name : ''};
   shoppingItems$ : Observable<Array<ShoppingItem>>;
 
   //Here, by specifying "AppState", we inform the store framework that how does our store look.
@@ -23,23 +25,17 @@ export class AppComponent implements OnInit{
 
   ngOnInit(): void {
     this.shoppingItems$ = this.store.select(store=> store.shopping);
-    //every 2 seconds, we dispatch the add action.
-    //When we dispatch the action, ShoppingReducer is called by the store framework.
-    //How did the store know that this reducer is to be called ?
-    //In the input params of reducer, we specified the type of "action" as "Shopping Action"
-    //So all actions of type "Shopping Action" are now mapped to the reducer.
-    //Then finally the switch in the reducer recues the state and returns a new state.
-    setInterval(() => this.addItem(), 2000);
   }
 
   addItem() : void {
-    //dispatch method is used to send actions to our store
-    this.store.dispatch(new AddItemAction(
-      {//payload
-        id: '456', 
-        name : 'Fanta'
-      }
-      ));
+    //this is called by form subsmission.
+    this.newShoppingItem.id = uuid();
+    //the dispatch will execute the recucer and reducer will provide a new state
+    //in SST under property "shopping", since "shopping" is updated, 
+    //the store emits the new value through the shoppingItems$ observable.
+    //since UI template has subscribed to it, its re-rendered.
+    this.store.dispatch(new AddItemAction(this.newShoppingItem));
+    this.newShoppingItem = {id : '', name: ''};
   }
 
 }
