@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { AddItemAction } from './store/actions/shopping-actions';
+import { AddItemAction, LoadShoppingAction } from './store/actions/shopping-actions';
 import { AppState } from './store/models/app-state';
 import { ShoppingItem } from './store/models/shopping-item.model';
 import { v4 as uuid } from 'uuid';
@@ -24,6 +24,8 @@ export class AppComponent implements OnInit{
   }
 
   ngOnInit(): void {
+    this.shoppingItems$ = this.store.select(store => store.shopping.list);
+    this.store.dispatch(new LoadShoppingAction());
   }
 
   addItem() : void {

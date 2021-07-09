@@ -10,6 +10,7 @@ import { environment } from '../environments/environment';
 import { HttpClientModule } from '@angular/common/http';
 import { ShoppingService } from './shopping.service';
 import { EffectsModule } from '@ngrx/effects';
+import { ShoppingEffects } from './effects/shopping-effects';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { EffectsModule } from '@ngrx/effects';
       shopping: ShoppingReducer
     }),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
-    EffectsModule.forRoot([])
+    //pass in the effects to the effect framework
+    EffectsModule.forRoot([ShoppingEffects])
   ],
   providers: [ShoppingService],
   bootstrap: [AppComponent]

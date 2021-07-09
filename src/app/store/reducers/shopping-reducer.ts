@@ -20,18 +20,35 @@ export function ShoppingReducer(
     state: ShoppingState = initialState,
     action: ShoppingAction) {
         switch(action.type) {
+            case ShoppingActionTypes.LOAD_SHOPPING:
+                return {
+                    ...state,
+                    loading: true
+                }
+            case ShoppingActionTypes.LOAD_SHOPPING_SUCCESS:
+                return {
+                    ...state,
+                    list: action.payload,
+                    loading : false
+                }
+            case ShoppingActionTypes.LOAD_SHOPPING_FAILURE:
+                return {
+                    ...state,
+                    error : action.payload,
+                    loading : false
+                }
             case ShoppingActionTypes.ADD_ITEM_SUCCESS:
                 return {
                     ...state, 
                     list: action.payload, 
                     loading: false
-                };
+                };    
             case ShoppingActionTypes.DELETE_ITEM_SUCCESS:
                 return {
                     ...state,
                     list : state.list.filter((shoppingItem)=>shoppingItem.id !== action.payload), 
                     loading: false
-                }; 
+                };    
             default:
                 return state;   
         }
