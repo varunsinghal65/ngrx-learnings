@@ -1,7 +1,6 @@
 
 
 import {Action} from '@ngrx/store'
-import { type } from 'os';
 import { ShoppingItem } from '../models/shopping-item.model'
 
 //Actions, used whenever we want to update the SST (single state tree) or communicate with our store.
