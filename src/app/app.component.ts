@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { AddItemAction } from './store/actions/shopping-actions';
+import { AddItemAction, RemoveItemAction } from './store/actions/shopping-actions';
 import { AppState } from './store/models/app-state';
 import { ShoppingItem } from './store/models/shopping-item.model';
 import { v4 as uuid } from 'uuid';
@@ -28,14 +28,13 @@ export class AppComponent implements OnInit{
   }
 
   addItem() : void {
-    //this is called by form subsmission.
     this.newShoppingItem.id = uuid();
-    //the dispatch will execute the recucer and reducer will provide a new state
-    //in SST under property "shopping", since "shopping" is updated, 
-    //the store emits the new value through the shoppingItems$ observable.
-    //since UI template has subscribed to it, its re-rendered.
     this.store.dispatch(new AddItemAction(this.newShoppingItem));
     this.newShoppingItem = {id : '', name: ''};
+  }
+
+  removeItem(id: String) : void {
+    this.store.dispatch(new RemoveItemAction(id));
   }
 
 }

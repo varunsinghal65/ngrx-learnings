@@ -14,7 +14,8 @@ import { ShoppingItem } from '../models/shopping-item.model'
 //action types
 export enum ShoppingActionTypes {
     // string rep of actions, should be unique  
-    ADD_ITEM = '[SHOPPING] Add Item'
+    ADD_ITEM = '[SHOPPING] Add Item',
+    REMOVE_ITEM = '[SHOPPING] Remove Item'
 }
 
 //creating action
@@ -26,5 +27,10 @@ export class AddItemAction implements Action {
     constructor(public payload: ShoppingItem) {}
 }
 
+export class RemoveItemAction implements Action {
+    readonly type:ShoppingActionTypes = ShoppingActionTypes.REMOVE_ITEM;
+    constructor(public payload:String){}
+}
+
 //export the actions
-export type ShoppingAction = AddItemAction;
+export type ShoppingAction = AddItemAction | RemoveItemAction;
